@@ -1,0 +1,40 @@
+#!/usr/bin/env python
+from pydoc import Doc
+from docopt import docopt
+
+__doc__ = """
+Usage:
+    superk power (on | off)
+    superk flux <value>
+    superk filter <pos>
+    superk [-h | --help]
+
+Options:
+    -h --help Print this message
+
+Commands:
+    power (on | off)    Turn source on or off (case insensitive)
+    flux <value>        Change the intensity value of the source (0 to 100)
+    filter <pos>        (INACTIVE) Change the ND filter in the source
+"""
+
+
+if __name__ == "__main__":
+    args = docopt(__doc__)
+
+    if args["power"]:
+        option = args["power"]
+        if option == "on":
+            pass
+        elif option == "off":
+            pass
+        else:
+            print(f"{option} not recognized, please enter \"on\" or \"off\"")
+    elif args["flux"]:
+        pass
+    elif args["filter"]:
+        pass
+    else:
+        pass
+
+
