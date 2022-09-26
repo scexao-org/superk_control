@@ -2,11 +2,13 @@
 from docopt import docopt
 import sys
 
+from superk_control.superk import SuperK
+
 __doc__ = """
 Usage:
     superk -h | --help
     superk power (on | off)
-    superk flux <value>
+    superk flux [<value>]
     superk filter <pos>
 
 Options:
@@ -14,40 +16,31 @@ Options:
 
 Commands:
     power (on | off)    Turn source on or off (case insensitive)
-    flux <value>        Change the intensity value of the source (0 to 100)
+    flux [<value>]      Change the intensity value of the source (0 to 100). If no value provided, return current flux
     filter <pos>        (INACTIVE) Change the ND filter in the source
 """
-
-def flux_bar(flux_value, width=40):
-    frac = flux_value / 100
-    num_fill = int(frac * width)
-    rest = width - num_fill
-    return f"{0} {'█' * num_fill}{'-' * rest} {100}"
 
 
 if __name__ == "__main__":
     args = docopt(__doc__)
+
+    superk = SuperK()
+
     if args["power"]:
         option = args["power"]
         if args["on"]:
-            print("\x1b[42mSOURCE TURNED ON")
-            # todo
+            superk.power_on()
         elif args["off"]:
-            print("\x1b[41mSOURCE TURNED OFF")
-            # todo
+            superk.power_off()
     elif args["flux"]:
-        value = float(args["<value>"])
-        if value < 0 or value > 100:
-            print(f"could not parse flux value {value}, should be between 0 and 100")
-            sys.exit(1)
+        if args["<value>"]:
+            value = float(args["<value>"])
+            superk.set_flux(value)
         else:
-            print(f"Flux set to: {value}")
-            print(flux_bar(value))
-            # todo
+            value = superk.get_flux()
+            print(f"{value}")
     elif args["filter"]:
         print(f"No filter options yet")
         sys.exit(1)
 
     sys.exit(0)
-
-
