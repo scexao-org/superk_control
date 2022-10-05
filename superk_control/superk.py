@@ -74,6 +74,16 @@ class SuperK:
         print(flux_bar(value))
         return value
 
+    def reset_interlock(self):
+        msg = struct.pack("<B", 1)
+        self.telegram.write(0x32, msg)
+        self.get_interlock_status()
+
+    def disable_interlock(self):
+        msg = struct.pack("<B", 0)
+        self.telegram.write(0x32, msg)
+        self.get_interlock_status()
+
     def get_interlock_status(self):
         response = self.telegram.read(0x32)
         msb = response[1][1]

@@ -12,6 +12,7 @@ Usage:
     superk flux [<value>]
     superk filter <pos>
     superk mode [<mode>]
+    superk interlock [reset | disable]
 
 Options:
     -h --help           Print this message
@@ -22,6 +23,10 @@ Commands:
     flux [<value>]      Change the intensity value of the source (0 to 100). If no value provided, return current flux
     filter <pos>        (INACTIVE) Change the ND filter in the source
     mode [<mode>]       Change control mode between normal (0), external trigger (1) or external feedback (2). If no value provided return current mode
+    interlock           Return interlock status
+              reset     Try and reset interlock
+              disable   Disable interlock (DANGEROUS)
+
     
 """
 
@@ -53,6 +58,13 @@ if __name__ == "__main__":
             superk.set_operation_mode(mode)
         else:
             superk.get_operation_mode()
+    elif args["interlock"]:
+        if args["reset"]:
+            superk.reset_interlock()
+        elif args["disable"]:
+            superk.disable_interlock()
+        else:
+            superk.get_interlock_status()
     else:
         superk.get_interlock_status()
         superk.power_status()
