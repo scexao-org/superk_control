@@ -7,17 +7,22 @@ from superk_control.superk import SuperK
 __doc__ = """
 Usage:
     superk -h | --help
-    superk power (on | off)
+    superk status
+    superk power [on | off]
     superk flux [<value>]
     superk filter <pos>
+    superk mode [<mode>]
 
 Options:
     -h --help           Print this message
 
 Commands:
-    power (on | off)    Turn source on or off (case insensitive)
+    status              Print detailed status message
+    power [on | off]    Turn source on or off (case insensitive). If no option provided, returns the power status.
     flux [<value>]      Change the intensity value of the source (0 to 100). If no value provided, return current flux
     filter <pos>        (INACTIVE) Change the ND filter in the source
+    mode [<mode>]       Change control mode between normal (0), external trigger (1) or external feedback (2). If no value provided return current mode
+    
 """
 
 
@@ -27,20 +32,30 @@ if __name__ == "__main__":
     superk = SuperK()
 
     if args["power"]:
-        option = args["power"]
         if args["on"]:
             superk.power_on()
         elif args["off"]:
             superk.power_off()
+        else:
+            superk.power_status()
     elif args["flux"]:
         if args["<value>"]:
             value = float(args["<value>"])
             superk.set_flux(value)
         else:
-            value = superk.get_flux()
-            print(f"{value}")
+            superk.get_flux()
     elif args["filter"]:
         print(f"No filter options yet")
         sys.exit(1)
-
+    elif args["mode"]:
+        if args["<mode>"]:
+            mode = int(args["<mode>"])
+            superk.set_operation_mode(mode)
+        else:
+            superk.get_operation_mode()
+    else:
+        superk.get_interlock_status()
+        superk.power_status()
+        superk.get_operation_mode()
+        superk.get_flux()
     sys.exit(0)
