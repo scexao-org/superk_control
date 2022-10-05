@@ -37,6 +37,7 @@ setup(
         "docopt==0.6.*",
         "numpy==1.*",
         "pyserial==3.*",
+        "crc==1.*",
         # "scxkw==0.1",
     ],
 )
