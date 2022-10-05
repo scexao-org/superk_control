@@ -17,9 +17,9 @@ with open("README.md", "r") as fh:
 setup(
     long_description=readme,
     long_description_content_type="text/markdown",
-    name="vampires_control",
+    name="superk_control",
     version=version,
-    description="VAMPIRES control software",
+    description="NKT Photonics SuperK EVO control software",
     python_requires=">=3.7,<3.10",
     project_urls={
         "repository": "https://github.com/scexao-org/superk_control",
