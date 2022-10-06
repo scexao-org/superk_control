@@ -14,8 +14,10 @@ dependencies = [
     "pyserial==3.*",
     "crc==1.*",
 ]
-optional-dependencies = {test = ["pytest==7.*", "mock-serial==0.0.*", "pytest-cov==4.*"]}
 dynamic = ["version"]
+
+[project.optional-dependencies]
+test = ["pytest==7.*", "mock-serial==0.0.*", "pytest-cov==4.*"]
 
 [project.scripts]
 superk = "superk_control.cli.superk:main"
