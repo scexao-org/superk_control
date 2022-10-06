@@ -1,8 +1,11 @@
+import pytest
 from superk_control.telegram import (
     TelegramInterface,
     sub_special_chars,
     unsub_special_chars,
 )
+
+from . import skipwindows
 
 
 def test_sub_special_chars():
@@ -27,6 +30,8 @@ def test_sub_special_chars():
 
 
 class TestTelegram:
+
+    @skipwindows
     def test_read(self, mock_serial):
         # test reading module name
         stub = mock_serial.stub(
@@ -47,6 +52,7 @@ class TestTelegram:
 
         telegram.serial.close()  # cleanup
 
+    @skipwindows
     def test_write(self, mock_serial):
         # test writing to emission on register
         stub = mock_serial.stub(
@@ -64,3 +70,10 @@ class TestTelegram:
         assert bytes(message) == b""
 
         telegram.serial.close()  # cleanup
+
+    def test_creation(self):
+        with pytest.raises(ValueError):
+            telegram = TelegramInterface(port="", dest=0x0F, source=160)
+        with pytest.raises(ValueError):
+            telegram = TelegramInterface(port="", dest=0x0F, source=256)
+    

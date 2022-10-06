@@ -41,6 +41,6 @@ setup(
         # "scxkw==0.1",
     ],
     extras_require={
-        "test" : ["pytest==7.*", "mock-serial==0.0.*"]
+        "test" : ["pytest==7.*", "mock-serial==0.0.*", "pytest-cov==4.*"]
     }
 )

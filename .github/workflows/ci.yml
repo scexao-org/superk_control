@@ -1,0 +1,40 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+    tags: ["*"]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    name: Python ${{ matrix.version }} - ${{ matrix.os }} - ${{ matrix.arch }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        version: ["3.7", "3.8", "3.9"]
+        os:
+          - ubuntu-latest
+          - macOS-latest
+          - windows-latest
+        arch: ["x64"]
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup python ${{ matrix.version }}
+        uses: actions/setup-python@v1
+        with:
+          python-version: ${{ matrix.version }}
+          architecture: ${{ matrix.arch }}
+      - name: Install Project and Dependencies
+        run: |
+          pip install -U pip
+          pip install .[test]
+      - name: Test
+        run: |
+          pytest --cov --cov-report=xml
+      - name: Coverage
+        uses: codecov/codecov-action@v1
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
