@@ -2,7 +2,7 @@
 from docopt import docopt
 import sys
 
-from superk_control.superk import SuperK
+from ..superk import SuperK
 
 __doc__ = """
 Usage:
@@ -10,7 +10,7 @@ Usage:
     superk status
     superk power [on | off]
     superk flux [<value>]
-    superk filter <pos>
+    superk filter [<pos>]
     superk mode [<mode>]
     superk interlock [reset | disable]
 
@@ -21,7 +21,7 @@ Commands:
     status              Print detailed status message
     power [on | off]    Turn source on or off (case insensitive). If no option provided, returns the power status.
     flux [<value>]      Change the intensity value of the source (0 to 100). If no value provided, return current flux
-    filter <pos>        (INACTIVE) Change the ND filter in the source
+    filter [<pos>]      (INACTIVE) Change the ND filter in the source
     mode [<mode>]       Change control mode between normal (0), external trigger (1) or external feedback (2). If no value provided return current mode
     interlock           Return interlock status
               reset     Try and reset interlock
@@ -31,7 +31,7 @@ Commands:
 """
 
 
-if __name__ == "__main__":
+def main():
     args = docopt(__doc__)
 
     superk = SuperK()
@@ -71,3 +71,6 @@ if __name__ == "__main__":
         superk.get_operation_mode()
         superk.get_flux()
     sys.exit(0)
+
+if __name__ == "__main__":
+    main()

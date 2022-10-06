@@ -1,6 +1,28 @@
 [build-system]
-build-backend = "setuptools.build_meta"
 requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "superk_control"
+description = "NKT Photonics SuperK EVO control software"
+readme = "README.md"
+license = {file = "LICENSE"}
+authors = [{name = "Miles Lucas", email = "mdlucas@hawaii.edu"}]
+requires-python = ">=3.7,<3.10"
+dependencies = [
+    "docopt==0.6.*",
+    "numpy==1.*",
+    "pyserial==3.*",
+    "crc==1.*",
+]
+optional-dependencies = {test = ["pytest==7.*", "mock-serial==0.0.*", "pytest-cov==4.*"]}
+dynamic = ["version"]
+
+[project.scripts]
+superk = "superk_control.cli.superk:main"
+
+[tool.setuptools.dynamic]
+version = {attr = "superk_control.__version__"}
 
 [tool.pytest.ini_options]
 log_cli = false
