@@ -40,4 +40,7 @@ setup(
         "crc==1.*",
         # "scxkw==0.1",
     ],
+    extras_requires={
+        "test" : ["pytest==7.*", "mock-serial==0.0.*"]
+    }
 )
