@@ -1,5 +1,6 @@
-from serial import Serial
 from crc import CrcCalculator, Crc16
+import logging
+from serial import Serial
 import struct
 
 
@@ -26,6 +27,7 @@ class TelegramInterface:
         # from user manual: 115200/8/N/1
         self.serial = Serial(port=self.port, baudrate=115200, **serial_kwargs)
         self.crc_calculator = CrcCalculator(Crc16.CCITT, table_based=True)
+        self.logger = logging.getLogger(__class__.__name__)
 
     def read(self, register):
         msg = bytearray([0x4, register])
@@ -51,7 +53,9 @@ class TelegramInterface:
         sub_special_chars(payload)
 
         payload_hex = payload.hex()
-        # print(f"payload bytes: {' '.join(a + b for a,b in zip(payload_hex[::2], payload_hex[1::2]))}")
+        self.logger.debug(
+            f"payload bytes: {' '.join(a + b for a,b in zip(payload_hex[::2], payload_hex[1::2]))}"
+        )
 
         # framing
         payload = self.START_BIT + payload + self.END_BIT
@@ -64,25 +68,23 @@ class TelegramInterface:
         response_msg = bytearray(self.serial.read_until(self.END_BIT))[:-1]
 
         response_hex = response_msg.hex()
-        # print(f"response bytes: {' '.join(a + b for a,b in zip(response_hex[::2], response_hex[1::2]))}")
+        self.logger.debug(
+            f"response bytes: {' '.join(a + b for a,b in zip(response_hex[::2], response_hex[1::2]))}"
+        )
 
         # replace substituted bytes with special chars
         unsub_special_chars(response_msg)
         # check crc, should be 0
         resp_crc = self.crc_calculator.calculate_checksum(response_msg)
-        # print(f"response crc: {resp_crc}")
+        self.logger.debug(f"response crc: {resp_crc}")
         assert resp_crc == 0, f"response CRC was not 0"
-        # remove CRC bytes
-        del response_msg[-2:]
 
-        # return type, return data if any
+        # return type, return data if any, skipping CRC bytes
         response_type = response_msg[2]
-        if len(response_msg) > 4:
-            response_data = response_msg[4:]
-        else:
-            response_data = b""
+        response_data = response_msg[4:-2]
 
         return response_type, response_data
+
 
 def sub_special_chars(data: bytearray):
     # modifies data in place!!!
@@ -98,6 +100,7 @@ def sub_special_chars(data: bytearray):
         i += 1
 
     return data
+
 
 def unsub_special_chars(data: bytearray):
     # modifies data in place!!!

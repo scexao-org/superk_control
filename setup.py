@@ -33,14 +33,14 @@ setup(
     scripts=[
         "scripts/superk",
     ],
-    install_requires=[
+    install_require=[
         "docopt==0.6.*",
         "numpy==1.*",
         "pyserial==3.*",
         "crc==1.*",
         # "scxkw==0.1",
     ],
-    extras_requires={
+    extras_require={
         "test" : ["pytest==7.*", "mock-serial==0.0.*"]
     }
 )
