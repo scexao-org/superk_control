@@ -2,6 +2,7 @@
 
 [![CI](https://github.com/scexao-org/superk_control/actions/workflows/ci.yml/badge.svg)](https://github.com/scexao-org/superk_control/actions/workflows/ci.yml)
 [![Coverage Status](https://codecov.io/gh/scexao-org/superk_control/graph/badge.svg)](https://codecov.io/gh/scexao-org/superk_control/)
+[![License](https://img.shields.io/github/license/scexao-org/superk_control?color=yellow)](LICENSE)
 
 Control software for NKT Photonics SuperK EVO lasers
 
