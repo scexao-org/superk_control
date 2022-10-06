@@ -1,10 +1,13 @@
 # superk_control
 
+[![CI](https://github.com/scexao-org/superk_control/actions/workflows/ci.yml/badge.svg)](https://github.com/scexao-org/superk_control/actions/workflows/ci.yml)
+[![Coverage Status](https://codecov.io/gh/scexao-org/superk_control/graph/badge.svg)](https://codecov.io/gh/scexao-org/superk_control/)
+
 Control software for NKT Photonics SuperK EVO lasers
 
 ## Installation
 
-Clone this repository and pip-install it however you like
+This software should work on all major platforms. To install, clone this repository and pip-install it however you like
 
 ```
 $ pip install git+https://github.com/scexao-org/superk_control#egg=superk_control
@@ -29,7 +32,7 @@ Usage:
     superk status
     superk power [on | off]
     superk flux [<value>]
-    superk filter <pos>
+    superk filter [<pos>]
     superk mode [<mode>]
     superk interlock [reset | disable]
 
@@ -40,9 +43,31 @@ Commands:
     status              Print detailed status message
     power [on | off]    Turn source on or off (case insensitive). If no option provided, returns the power status.
     flux [<value>]      Change the intensity value of the source (0 to 100). If no value provided, return current flux
-    filter <pos>        (INACTIVE) Change the ND filter in the source
+    filter [<pos>]      (INACTIVE) Change the ND filter in the source
     mode [<mode>]       Change control mode between normal (0), external trigger (1) or external feedback (2). If no value provided return current mode
     interlock           Return interlock status
               reset     Try and reset interlock
               disable   Disable interlock (DANGEROUS)
+```
+
+
+## Testing
+
+This code can be tested on Mac and Linux platforms and will mock the serial interface so no hardware is required. First, set up the test dependencies
+
+```
+$ cd superk_control
+$ pip install .[test]
+```
+
+then run the tests using `pytest`
+
+```
+$ python -m pytest
+```
+
+to see the line coverage, add the `--cov` flag
+
+```
+$ python -m pytest --cov
 ```
