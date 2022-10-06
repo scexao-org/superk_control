@@ -6,8 +6,7 @@ from .telegram import TelegramInterface
 
 UNICODE_SUPPORT = sys.stdout.encoding.lower().startswith("utf")
 
-
-DEFAULT_PORT = os.environ.get("SUPERK_PORT", "COM5")
+DEFAULT_PORT = os.environ.get("SUPERK_PORT", "")
 
 
 class SuperK:
