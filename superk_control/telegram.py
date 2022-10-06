@@ -48,7 +48,7 @@ class TelegramInterface:
         crc = self.crc_calculator.calculate_checksum(msg)
         payload = msg + struct.pack(">H", crc)
         # substitute special chars with substitute bytes
-        self.sub_special_chars(payload)
+        sub_special_chars(payload)
 
         payload_hex = payload.hex()
         # print(f"payload bytes: {' '.join(a + b for a,b in zip(payload_hex[::2], payload_hex[1::2]))}")
@@ -67,7 +67,7 @@ class TelegramInterface:
         # print(f"response bytes: {' '.join(a + b for a,b in zip(response_hex[::2], response_hex[1::2]))}")
 
         # replace substituted bytes with special chars
-        self.unsub_special_chars(response_msg)
+        unsub_special_chars(response_msg)
         # check crc, should be 0
         resp_crc = self.crc_calculator.calculate_checksum(response_msg)
         # print(f"response crc: {resp_crc}")
@@ -84,30 +84,30 @@ class TelegramInterface:
 
         return response_type, response_data
 
-    def sub_special_chars(self, data: bytearray):
-        # modifies data in place!!!
-        i = 0
-        N = len(data)
-        while i < N:
-            b = data[i]
-            if b == 0x0A or b == 0x0D or b == 0x5E:
-                data[i] = 0x5E
-                data.insert(i + 1, b + 0x40)
-                i += 1
-                N += 1
+def sub_special_chars(data: bytearray):
+    # modifies data in place!!!
+    i = 0
+    N = len(data)
+    while i < N:
+        b = data[i]
+        if b == 0x0A or b == 0x0D or b == 0x5E:
+            data[i] = 0x5E
+            data.insert(i + 1, b + 0x40)
             i += 1
+            N += 1
+        i += 1
 
-        return data
+    return data
 
-    def unsub_special_chars(self, data: bytearray):
-        # modifies data in place!!!
-        i = 0
-        N = len(data)
-        while i < N:
-            b = data[i]
-            if b == 0x5E:
-                data[i] = data.pop(i + 1) - 0x40
-                N -= 1
-            i += 1
+def unsub_special_chars(data: bytearray):
+    # modifies data in place!!!
+    i = 0
+    N = len(data)
+    while i < N:
+        b = data[i]
+        if b == 0x5E:
+            data[i] = data.pop(i + 1) - 0x40
+            N -= 1
+        i += 1
 
-        return data
+    return data
