@@ -13,6 +13,8 @@ dependencies = [
     "docopt==0.6.*",
     "pyserial==3.*",
     "crc==1.*",
+    "swmain",
+    "scxconf"
 ]
 dynamic = ["version"]
 

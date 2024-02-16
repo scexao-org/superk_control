@@ -16,13 +16,7 @@ This software should work on all major platforms. To install, clone this reposit
 $ pip install git+https://github.com/scexao-org/superk_control#egg=superk_control
 ```
 
-## Setup
-
-Set the `SUPERK_PORT` environment variable to the serial port for communication (e.g., "COM5", "/dev/ttyUSB3")
-
-```
-$ export SUPERK_PORT="COM5"
-```
+**SCExAO local**: This code can be found in the `~/src/superk_control` folder on the SCExAO machines. It is hosted primarily on scexao2.
 
 ## Usage
 
