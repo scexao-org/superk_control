@@ -24,6 +24,7 @@ test = ["pytest==7.*", "mock-serial==0.0.*", "pytest-cov==4.*"]
 
 [project.scripts]
 superk = "superk_control.cli.superk:main"
+superk_daemon = "superk_control.cli.daemon:main"
 
 [tool.setuptools.dynamic]
 version = {attr = "superk_control.__version__"}

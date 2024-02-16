@@ -1,9 +1,14 @@
 import struct
 import os
 
+from swmain.network.pyroclient import connect
+
 from .telegram import TelegramInterface
 
-DEFAULT_PORT = os.environ.get("SUPERK_PORT", "")
+DEFAULT_PORT = os.environ.get(
+    "SUPERK_PORT",
+    "/dev/serial/by-id/usb-Silicon_Labs_CP2102N_USB_to_UART_Bridge_Controller_9a3288b0d3e4ea11b72f84d5994a5d01-if00-port0",
+)
 
 INTERLOCK_STATUS = {
     0x0000: "Interlock off (interlock circuit open)",
@@ -25,6 +30,8 @@ OPERATION_MODE = {
 
 
 class SuperK:
+    PYRO_KEY = "SUPERK"
+
     def __init__(self, port=DEFAULT_PORT, **serial_kwargs):
         self.telegram = TelegramInterface(port, dest=0x0F, **serial_kwargs)
 
@@ -101,3 +108,11 @@ class SuperK:
     def get_status_bits(self):
         response = self.telegram.read(0x66)
         return response[1]
+
+    @classmethod
+    def connect(__cls__, local: bool, pyro_key=None):
+        if local:
+            return __cls__()
+        if pyro_key is None:
+            pyro_key = __cls__.PYRO_KEY
+        return connect(pyro_key)

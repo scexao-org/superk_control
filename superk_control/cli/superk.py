@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 from docopt import docopt
+import os
 import sys
 
 from ..superk import SuperK
@@ -66,7 +67,8 @@ def _interlock_status(superk: SuperK) -> None:
 def main() -> None:
     args = docopt(__doc__)
 
-    superk = SuperK()
+    is_sc2 = os.getenv("WHICHCOMP", "") == "2"
+    superk = SuperK.connect(local=is_sc2)
 
     # power
     if args["power"]:
