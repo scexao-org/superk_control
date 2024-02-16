@@ -6,6 +6,8 @@
 
 Control software for NKT Photonics SuperK EVO lasers
 
+**Note:** There is a highly generic version of this code hosted on the `main` branch. A SCExAO-specific version with plugins for our instrument status monitor is on the `scexao` branch.
+
 ## Installation
 
 This software should work on all major platforms. To install, clone this repository and pip-install it however you like
