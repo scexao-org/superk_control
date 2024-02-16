@@ -94,7 +94,8 @@ class SuperK:
 
     def set_operation_mode(self, mode: int):
         if mode < 0 or mode > 2:
-            raise ValueError(f"Operation mode should be 0, 1, or 2, got {mode}")
+            msg = f"Operation mode should be 0, 1, or 2, got {mode}"
+            raise ValueError(msg)
         msg = struct.pack("<B", mode)
         self.telegram.write(0x31, msg)
         self.get_operation_mode()
