@@ -74,3 +74,7 @@ to see the line coverage, add the `--cov` flag
 ```
 $ python -m pytest --cov
 ```
+
+## Contributing and Development
+
+If you are making changes to this code, please try to keep the generic version on `main` updated. That means when you make a _functional_ change that is not specific to SCExAO, you should implement the changes on `main` and then rebase `scexao` off `main`.
