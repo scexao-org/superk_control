@@ -116,3 +116,27 @@ class SuperK:
         if pyro_key is None:
             pyro_key = __cls__.PYRO_KEY
         return connect(pyro_key)
+
+    def update_keys(self, power=None, interlock=None, mode=None, flux=None):
+        if power is None:
+            power = self.power_status()
+
+        if interlock is None:
+            is_ok, interlock = self.get_interlock_status()
+
+        if mode is None:
+            mode_val, mode = self.get_operation_mode()
+
+        if flux is None:
+            flux = self.get_flux()
+
+        if not is_ok:
+            status = "INTERLOCK"
+        else:
+            status = "ON" if power else "OFF"
+
+        ## TODO FITS header keys
+        # update_keys(
+        #     X_SRCST=status,
+        #     X_SRCPW=flux,
+        # )
