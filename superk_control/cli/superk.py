@@ -27,12 +27,14 @@ Commands:
 """
 UNICODE_SUPPORT = sys.stdout.encoding.lower().startswith("utf")
 
+
 def flux_bar(flux_value, width=40) -> str:
     frac = flux_value / 100
     num_fill = int(frac * width)
     rest = width - num_fill
     fill_char = "\u2588" if UNICODE_SUPPORT else "|"
     return f"0 |{fill_char * num_fill}{'-' * rest}| 100%"
+
 
 def _power_status(superk: SuperK) -> None:
     status = superk.power_status()
@@ -41,14 +43,17 @@ def _power_status(superk: SuperK) -> None:
     else:
         print("\x1b[41mSOURCE TURNED OFF\x1b[0m")
 
+
 def _flux_status(superk: SuperK) -> None:
     flux = superk.get_flux()
     print(f"Flux set to: {flux:.01f}%")
     print(flux_bar(flux))
 
+
 def _mode_status(superk: SuperK) -> None:
     value, mode = superk.get_operation_mode()
     print(f"MODE: {mode} ({value})")
+
 
 def _interlock_status(superk: SuperK) -> None:
     isok, code = superk.get_interlock_status()
@@ -56,6 +61,7 @@ def _interlock_status(superk: SuperK) -> None:
         print(f"\x1b[41mINTERLOCK: {code}\x1b[0m")
     else:
         print(f"\x1b[42mINTERLOCK: {code}\x1b[0m")
+
 
 def main() -> None:
     args = docopt(__doc__)

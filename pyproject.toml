@@ -17,6 +17,7 @@ dependencies = [
 dynamic = ["version"]
 
 [project.optional-dependencies]
+dev = ["ruff", "pre-commit"]
 test = ["pytest==7.*", "mock-serial==0.0.*", "pytest-cov==4.*"]
 
 [project.scripts]
@@ -32,3 +33,18 @@ log_cli_format = "[%(levelname)s] (%(name)-15s) %(message)s"
 
 [tool.coverage.run]
 source = ["superk_control"]
+
+[tool.ruff]
+line-length = 100
+
+[tool.ruff.format]
+skip-magic-trailing-comma = true
+
+[tool.ruff.lint.flake8-tidy-imports]
+ban-relative-imports = "parents"
+
+[tool.ruff.lint.isort]
+split-on-trailing-comma = false
+
+[tool.ruff.lint.pydocstyle]
+convention = "numpy"

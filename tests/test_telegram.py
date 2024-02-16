@@ -1,9 +1,5 @@
 import pytest
-from superk_control.telegram import (
-    TelegramInterface,
-    sub_special_chars,
-    unsub_special_chars,
-)
+from superk_control.telegram import TelegramInterface, sub_special_chars, unsub_special_chars
 
 
 def test_sub_special_chars():
@@ -42,9 +38,7 @@ class TestTelegram:
         assert stub.called
         assert stub.calls == 1
         assert flag == 8
-        assert (
-            bytes(message) == b"\x8f"
-        )  # expected module name for our SuperK EVO source
+        assert bytes(message) == b"\x8f"  # expected module name for our SuperK EVO source
 
         telegram.serial.close()  # cleanup
 
@@ -68,6 +62,6 @@ class TestTelegram:
 
     def test_creation(self):
         with pytest.raises(ValueError):
-            telegram = TelegramInterface(port="", dest=0x0F, source=160)
+            TelegramInterface(port="", dest=0x0F, source=160)
         with pytest.raises(ValueError):
-            telegram = TelegramInterface(port="", dest=0x0F, source=256)
+            TelegramInterface(port="", dest=0x0F, source=256)

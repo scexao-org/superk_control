@@ -5,7 +5,6 @@ import struct
 
 
 class TelegramInterface:
-
     START_BIT = b"\x0D"
     END_BIT = b"\x0A"
 
@@ -77,7 +76,7 @@ class TelegramInterface:
         # check crc, should be 0
         resp_crc = self.crc_calculator.calculate_checksum(response_msg)
         self.logger.debug(f"response crc: {resp_crc}")
-        assert resp_crc == 0, f"response CRC was not 0"
+        assert resp_crc == 0, "response CRC was not 0"
 
         # return type, return data if any, skipping CRC bytes
         response_type = response_msg[2]

@@ -60,7 +60,7 @@ This code can be tested on Mac and Linux platforms and will mock the serial inte
 
 ```
 $ cd superk_control
-$ pip install .[test]
+$ pip install ".[test]"
 ```
 
 then run the tests using `pytest`
@@ -78,3 +78,16 @@ $ python -m pytest --cov
 ## Contributing and Development
 
 If you are making changes to this code, please try to keep the generic version on `main` updated. That means when you make a _functional_ change that is not specific to SCExAO, you should implement the changes on `main` and then rebase `scexao` off `main`.
+
+You should install the development dependencies alongside the testing dependencies
+
+```
+$ cd superk_control
+$ pip install -e ".[dev]"
+```
+
+Then, set up the pre-commit
+
+```
+$ pre-commit install
+```

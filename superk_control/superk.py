@@ -1,5 +1,4 @@
 import struct
-import sys
 import os
 
 from .telegram import TelegramInterface
@@ -7,24 +6,25 @@ from .telegram import TelegramInterface
 DEFAULT_PORT = os.environ.get("SUPERK_PORT", "")
 
 INTERLOCK_STATUS = {
-        0x0000: "Interlock off (interlock circuit open)",
-        0x0001: "Waiting for interlock reset",
-        0x0002: "Interlock is OK",
-        0x1000: "Interlock power failure",
-        0x2000: "Internal interlock",
-        0x3000: "External Bus interlock",
-        0x4000: "Door interlock",
-        0x5000: "Key switch",
-        0xFF00: "Interlock circuit failure",
-    }
+    0x0000: "Interlock off (interlock circuit open)",
+    0x0001: "Waiting for interlock reset",
+    0x0002: "Interlock is OK",
+    0x1000: "Interlock power failure",
+    0x2000: "Internal interlock",
+    0x3000: "External Bus interlock",
+    0x4000: "Door interlock",
+    0x5000: "Key switch",
+    0xFF00: "Interlock circuit failure",
+}
 
 OPERATION_MODE = {
     0: "Normal operation",
     1: "External enable activated",
     2: "External feedback activated",
 }
-class SuperK:
 
+
+class SuperK:
     def __init__(self, port=DEFAULT_PORT, **serial_kwargs):
         self.telegram = TelegramInterface(port, dest=0x0F, **serial_kwargs)
 
@@ -101,4 +101,3 @@ class SuperK:
     def get_status_bits(self):
         response = self.telegram.read(0x66)
         return response[1]
-
