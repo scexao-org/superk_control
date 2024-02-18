@@ -2,6 +2,7 @@ import struct
 import os
 
 from swmain.network.pyroclient import connect
+from swmain.redis import update_keys
 
 from .telegram import TelegramInterface
 
@@ -60,7 +61,9 @@ class SuperK:
             # for some reason this register can return a 1,
             # which is not defined in the SDK manual
             status = "UNKNOWN"
-        self.update_keys(power=status)
+
+        update_keys(X_SRCEN=status)
+
         return status
 
     def set_flux(self, value):
@@ -76,6 +79,7 @@ class SuperK:
         response = self.telegram.read(0x27)
         int_value = struct.unpack("<H", response[1])[0]
         value = int_value / 10
+        update_keys(X_SRCFLX=value)
         return value
 
     def reset_interlock(self):
@@ -93,6 +97,8 @@ class SuperK:
         msb = response[1][1]
         value = struct.unpack("<H", response[1])[0]
         code = INTERLOCK_STATUS[value]
+        if not msb:
+            update_keys(X_SRCEN="INTERLOCK")
         return msb, code
 
     def set_operation_mode(self, mode: int):
@@ -120,27 +126,3 @@ class SuperK:
         if pyro_key is None:
             pyro_key = __cls__.PYRO_KEY
         return connect(pyro_key)
-
-    def update_keys(self, power=None, interlock=None, mode=None, flux=None):
-        if power is None:
-            power = self.power_status()
-
-        if interlock is None:
-            is_ok, interlock = self.get_interlock_status()
-
-        if mode is None:
-            mode_val, mode = self.get_operation_mode()
-
-        if flux is None:
-            flux = self.get_flux()
-
-        if not is_ok:
-            status = "INTERLOCK"
-        else:
-            status = "ON" if power else "OFF"
-
-        ## TODO FITS header keys
-        # update_keys(
-        #     X_SRCST=status,
-        #     X_SRCPW=flux,
-        # )
