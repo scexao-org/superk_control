@@ -39,10 +39,12 @@ def flux_bar(flux_value, width=40) -> str:
 
 def _power_status(superk: SuperK) -> None:
     status = superk.power_status()
-    if status:
+    if status == "ON":
         print("\x1b[42mSOURCE TURNED ON\x1b[0m")
-    else:
+    elif status == "OFF":
         print("\x1b[41mSOURCE TURNED OFF\x1b[0m")
+    else:
+        print("\x1b[43mSOURCE STATUS UNDEFINED\x1b[0m")
 
 
 def _flux_status(superk: SuperK) -> None:

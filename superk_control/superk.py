@@ -49,16 +49,19 @@ class SuperK:
         self.telegram.write(0x30, msg)
         self.power_status()
 
-    def power_status(self):
+    def power_status(self) -> str:
         response = self.telegram.read(0x30)
         val = struct.unpack("<B", response[1])[0]
         if val == 0:
-            return False
+            status = "OFF"
         elif val == 2:
-            return True
+            status = "ON"
         else:
-            msg = f"Unrecognized power status value {val!r}"
-            raise RuntimeError(msg)
+            # for some reason this register can return a 1,
+            # which is not defined in the SDK manual
+            status = "UNKNOWN"
+        self.update_keys(power=status)
+        return status
 
     def set_flux(self, value):
         if value < 0 or value > 100:
